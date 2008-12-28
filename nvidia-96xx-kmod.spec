@@ -9,7 +9,7 @@
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.09
-Release:       1%{?dist}.7
+Release:       1%{?dist}.8
 # Taken over by kmodtool
 Summary:       NVIDIA 1.0.96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -96,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Dec 28 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 96.43.09-1.8
+- rebuild for latest Fedora kernel;
+
 * Sun Dec 21 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 96.43.09-1.7
 - rebuild for latest Fedora kernel;
 
