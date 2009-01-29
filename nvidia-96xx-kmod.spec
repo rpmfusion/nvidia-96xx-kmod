@@ -5,13 +5,11 @@
 # a new akmod package will only get build when a new one is actually needed
 %define buildforkernels akmod
 
-%define repo rpmfusion
-
 Name:          nvidia-96xx-kmod
 Version:       96.43.10
-Release:       1%{?dist}
+Release:       2%{?dist}
 # Taken over by kmodtool
-Summary:       NVIDIA 1.0.96xx display driver kernel module
+Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -20,8 +18,8 @@ URL:           http://www.nvidia.com/
 # http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
-#Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
-Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
+Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
+#Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -31,32 +29,30 @@ ExclusiveArch:  i586 i686 x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  %{_bindir}/kmodtool
-%{!?kernels:BuildRequires: buildsys-build-%{repo}-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
+%{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
 # kmodtool does its magic here
-%{expand:%(kmodtool --target %{_target_cpu} --repo %{repo} --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
+%{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
-# Taken over by kmodtool
 %description
 The nvidia %{version} display driver kernel module for kernel %{kversion}.
-
 
 %prep
 # error out if there was something wrong with kmodtool
 %{?kmodtool_check}
 # print kmodtool output for debugging purposes:
-kmodtool  --target %{_target_cpu}  --repo %{repo} --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
-
+kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
 
 # patch loop
 #for arch in x86 x64
 #do
 #    pushd nvidiapkg-${arch}
-#patch0 -p0
+# empty
 #    popd
 #done
 
-for kernel_version in %{?kernel_versions}; do
+
+for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
     cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
 %else
@@ -69,12 +65,13 @@ done
 for kernel_version in %{?kernel_versions}; do
     pushd _kmod_build_${kernel_version%%___*}/usr/src/nv/
     ln -s -f Makefile.kbuild Makefile
-        if [ "${kernel_variant}" == "xen" ]; then
+        if [[ "${kernel_version%%___*}" = *xen ]] ; then
             CC="cc -D__XEN_TOOLS__ \
             -I${kernel_version##*___}/include/asm/mach-xen" \
             IGNORE_XEN_PRESENCE=1 \
             make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
         else
+            IGNORE_XEN_PRESENCE=1 \
             make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
         fi
     popd
@@ -84,10 +81,8 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
-    install -D -m 0644 _kmod_build_${kernel_version%%___*}/usr/src/nv/nvidia.ko $RPM_BUILD_ROOT%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/usr/src/nv/nvidia.ko $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
 done
-chmod u+x $RPM_BUILD_ROOT%{kmodinstdir_prefix}/*/%{kmodinstdir_postfix}/*
-
 %{?akmod_install}
 
 
@@ -96,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 29 2009 kwizart < kwizart at gmail.com > - 96.43.10-2
+- Update the spec file in sync with nvidia-kmod
+
 * Thu Jan 29 2009 kwizart < kwizart at gmail.com > - 96.43.10-1
 - Update to 96.43.10 (beta)
 
