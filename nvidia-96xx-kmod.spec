@@ -3,11 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels akmod
+%define buildforkernels newest
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.10
-Release:       2%{?dist}
+Release:       2%{?dist}.1
 # Taken over by kmodtool
 Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -91,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Feb 01 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 96.43.10-2.1
+- rebuild for latest Fedora kernel;
+
 * Thu Jan 29 2009 kwizart < kwizart at gmail.com > - 96.43.10-2
 - Update the spec file in sync with nvidia-kmod
 
