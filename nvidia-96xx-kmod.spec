@@ -3,15 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
-
-%define repo rpmfusion
+#define buildforkernels newest
 
 Name:          nvidia-96xx-kmod
-Version:       96.43.09
-Release:       1%{?dist}.11
+Version:       96.43.11
+Release:       1%{?dist}
 # Taken over by kmodtool
-Summary:       NVIDIA 1.0.96xx display driver kernel module
+Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -20,8 +18,8 @@ URL:           http://www.nvidia.com/
 # http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
-#Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
-Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
+Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
+#Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -96,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 25 2009 kwizart < kwizart at gmail.com > - 96.43.11-1
+- Update to 96.43.11 (stable)
+
 * Tue Feb 24 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 96.43.09-1.11
 - rebuild for latest Fedora kernel;
 
