@@ -7,7 +7,7 @@
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.14
-Release:       1%{?dist}
+Release:       1%{?dist}.1
 # Taken over by kmodtool
 Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -25,7 +25,7 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i586 i686 x86_64
+ExclusiveArch:  i686 x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  %{_bindir}/kmodtool
@@ -91,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Nov 22 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 96.43.14-1.1
+- rebuild for new kernel, disable i586 builds
+
 * Sat Nov 14 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 96.43.14-1
 - Update to 96.43.14
 
