@@ -3,7 +3,7 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels current
+%global buildforkernels current
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.23
@@ -48,7 +48,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} %{?buildf
 for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
-%patch1 -p1
+%patch0 -p1
     popd
 done
 
@@ -94,6 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Sep 15 2012 Leigh Scott <leigh123linux@googlemail.com> - 96.43.23-1
 - Update to 96.43.23
+- patch for kernel changes
 
 * Wed Nov 03 2010 Nicolas Chauvet <kwizart@gmail.com> - 96.43.19-1
 - Update to 96.43.19
