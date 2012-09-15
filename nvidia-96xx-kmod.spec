@@ -94,6 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Sep 15 2012 Leigh Scott <leigh123linux@googlemail.com> - 96.43.23-1
 - Update to 96.43.23
+- patch for kernel changes
 
 * Wed Nov 03 2010 Nicolas Chauvet <kwizart@gmail.com> - 96.43.19-1
 - Update to 96.43.19
