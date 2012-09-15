@@ -21,6 +21,7 @@ URL:           http://www.nvidia.com/
 Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
 #Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
+Patch0:        drop24support.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,12 +45,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} %{?buildf
 %setup -q -c -T -a 0
 
 # patch loop
-#for arch in x86 x64
-#do
-#    pushd nvidiapkg-${arch}
-# empty
-#    popd
-#done
+for arch in x86 x64
+do
+    pushd nvidiapkg-${arch}
+%patch1 -p1
+    popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
