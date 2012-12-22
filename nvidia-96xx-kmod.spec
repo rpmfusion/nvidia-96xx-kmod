@@ -7,7 +7,7 @@
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.23
-Release:       1%{?dist}.13
+Release:       1%{?dist}.14
 # Taken over by kmodtool
 Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Dec 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 96.43.23-1.14
+- Rebuilt for updated kernel
+
 * Wed Dec 19 2012 Nicolas Chauvet <kwizart@gmail.com> - 96.43.23-1.13
 - Rebuilt for updated kernel
 
