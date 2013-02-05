@@ -7,7 +7,7 @@
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.23
-Release:       2%{?dist}.6
+Release:       3%{?dist}
 # Taken over by kmodtool
 Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -22,6 +22,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 #Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
 Patch0:        3.7_kernel.patch
+Patch1:        conftest.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -49,6 +50,7 @@ for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
 %patch0 -p1
+%patch1 -p1
     popd
 done
 
@@ -92,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 05 2013 Leigh Scott <leigh123linux@googlemail.com> - 96.43.23-3
+- patch for 3.7.6 kernel compile issue
+
 * Tue Feb 05 2013 Nicolas Chauvet <kwizart@gmail.com> - 96.43.23-2.6
 - Rebuilt for kernel
 
