@@ -3,11 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-#global buildforkernels newest
+%global buildforkernels newest
 
 Name:          nvidia-96xx-kmod
 Version:       96.43.23
-Release:       5%{?dist}
+Release:       5%{?dist}.1
 # Taken over by kmodtool
 Summary:       NVIDIA 96xx display driver kernel module
 Group:         System Environment/Kernel
@@ -96,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 96.43.23-5.1
+- Rebuilt for kernel
+
 * Sun Mar 10 2013 Nicolas Chauvet <kwizart@gmail.com> - 96.43.23-5
 - Modify patch to build with kernel 3.8
 
